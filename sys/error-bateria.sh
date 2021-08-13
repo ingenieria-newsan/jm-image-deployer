@@ -2,7 +2,7 @@ COLUMNS=$(tput cols)
 
 # mensaje de error por falta de cargador
 text="FALTA CONEXIÓN A ALIMENTACION EXTERNA"
-printf "\n\n\n\n \033[1;30m %*s \033[0m \n" $(((${#text}+$COLUMNS)/2)) "$text"
+printf "\n\n \033[1;30m %*s \033[0m \n" $(((${#text}+$COLUMNS)/2)) "$text"
 
 text="Por favor, conecte el cargador al equipo"
 printf "\n\n\n %*s \n" $(((${#text}+$COLUMNS)/2)) "$text"

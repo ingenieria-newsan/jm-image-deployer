@@ -8,11 +8,13 @@ dir_base=`dirname $SCRIPT`;
 printf '[ INFO ] Detectando discos...\n'
 ubuntu=$(lsblk -no pkname $(findmnt -n / | awk '{ print $2 }'))
 huayra="sda"
+
 if [ $ubuntu == $huayra ]
 	then
 		huayra="sdb"
-		printf "[ INFO ] Discos: Live=${ubuntu^^} Destino=${huayra^^}.\n"
 fi
+
+printf "[ INFO ] Discos: Live=${ubuntu^^} Destino=${huayra^^}.\n"
 
 sleep .5
 
@@ -59,7 +61,7 @@ if [ $hash_equipo = $hash_archivo ]
 			else
 				printf '[ WARN ] Falló la validación por particionado.\n'
 				hash_check=false
-				gnome-terminal --full-screen --hide-menubar --profile texto-error --wait -- ./sys/error-texto.sh RUNNING TEST
+				gnome-terminal --full-screen --hide-menubar --profile texto-error --wait -- ./sys/error-generico.sh RUNNING TEST
 		fi
 fi
 
@@ -79,7 +81,7 @@ if [ $(cat $dir_base/versiones/bios.version) = $(sudo dmidecode -s bios-version)
 	else
 		printf '[ WARN ] Falló la validación de BIOS.\n'
 		bios_check=false
-		gnome-terminal --full-screen --hide-menubar --profile texto-error --wait -- ./sys/error-texto.sh BIOS
+		gnome-terminal --full-screen --hide-menubar --profile texto-error --wait -- ./sys/error-generico.sh BIOS
 fi
 
 sleep .5
@@ -112,26 +114,35 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 		printf "\n\n\n \033[5;30m %*s \033[0m \n" $(((${#text}+$COLUMNS)/2)) "$text"
 		printf "\n\n\t Por favor apaguelo manualmente manteniendo presionado el boton \n\t de apagado durante 5 segundos \n"
 		
-		# volcado de imagen
-		gnome-terminal --full-screen --hide-menubar --profile texto --wait -- ./sys/volcado.sh $huayra
+		# bucle de volcado y control de imagen		
+		image_check=false
+		image_counter=1
 
-		#una vez terminada la clonacion chequeamos que el log de salida no sea error e imprimimos la mac
-		linea="Program terminated"
-		error="Program terminated"
-		
-		# recuperamos la ultima linea del log de salida para ver si se completo correctamente
-		if [ -e /var/log/clonezilla.log ]
-			then
-				linea=$(tail -1 /var/log/clonezilla.log | cut -d'!' -f 1)
-		fi
-		
-		# valida si hay un error y muestra el mensaje correspondiente
-		if [ "$linea" == "$error" ]
-			then
-				gnome-terminal --full-screen --hide-menubar --profile texto --wait -- ./sys/error-volcado.sh
-			else
-				gnome-terminal --full-screen --hide-menubar --profile texto-ok --wait -- ./sys/ok-texto.sh $ubuntu
-		fi
+		while [ image_check == "false" ]
+			do
+				# volcado de imagen
+				gnome-terminal --full-screen --hide-menubar --profile texto --wait -- ./sys/volcado.sh $huayra
+
+				# chequeo del log de salida
+				linea="Program terminated"
+				error="Program terminated"
+				
+				# recuperamos la ultima linea del log de salida para ver si se completo correctamente
+				if [ -e /var/log/clonezilla.log ]
+					then
+						linea=$(tail -1 /var/log/clonezilla.log | cut -d'!' -f 1)
+				fi
+				
+				# valida si hay un error y muestra el mensaje correspondiente
+				if [ "$linea" == "$error" ]
+					then
+						gnome-terminal --full-screen --hide-menubar --profile texto --wait -- ./sys/error-volcado.sh $image_counter
+						image_counter=$($image_counter+1)
+					else
+						gnome-terminal --full-screen --hide-menubar --profile texto-ok --wait -- ./sys/ok-texto.sh $ubuntu
+						image_check=true
+				fi
+		done
 	
 	else
 		printf "[ WARN ] Faltan validaciones requeridas: hash_check=$hash_check bios_check=$bios_check"
