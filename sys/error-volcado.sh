@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # sonido de error
-./sonido-error.sh 
+./sonido-error.sh
 
 # mensaje de error
 COLUMNS=$(tput cols) 
