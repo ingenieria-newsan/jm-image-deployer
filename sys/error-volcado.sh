@@ -1,19 +1,19 @@
 #!/bin/bash
 
 # sonido de error
-./sonido-error.sh
+./sys/error-sonido.sh
 
 # mensaje de error
 COLUMNS=$(tput cols) 
-title="ERROR EN EL VOLCADO DE LA IMAGEN"
+title="ERROR EN EL VOLCADO DE LA IMAGEN (${1})"
 printf "\n\n \033[1;30m %*s \033[0m \n" $(((${#title}+$COLUMNS)/2)) "$title"
 printf "\n\n  Proceda de la siguiente manera:"
 printf "\n\n\t 1) Verifique que el disco de volcado y que el cargador se encuentren bien conectados."
 printf "\n\n\t 2) Si es la primera vez que sucede un fallo, puede reintarlo presionando 'L'."
 printf "\n\n\t 3) Si ya reintentó, puede apagar el equipo presionando 'A'."
 
-title="PRESIONE 'L' o 'A' PARA CONTINUAR" 
-printf "%*s\n" $(((${#title}+$COLUMNS)/2)) "$title"
+text="PRESIONE 'L' o 'A' PARA CONTINUAR" 
+printf "\n\n\n %*s \n" $(((${#text}+$COLUMNS)/2)) "$text"
 
 # espera que se presione una tecla
 read -s -n 1  -p "" key

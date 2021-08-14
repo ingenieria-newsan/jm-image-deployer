@@ -1,3 +1,8 @@
+#! /bin/bash
+
+# sonido de error
+./sys/error-sonido.sh
+
 COLUMNS=$(tput cols)
 
 # mensaje de error por falta de cargador
@@ -17,5 +22,3 @@ done
 
 # mensaje de conexión detectada
 printf '[ INFO ] Conexión a alimentación externa detectada\n'
-
-exit

@@ -139,7 +139,7 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 						gnome-terminal --full-screen --hide-menubar --profile texto --wait -- ./sys/error-volcado.sh $image_counter
 						image_counter=$($image_counter+1)
 					else
-						gnome-terminal --full-screen --hide-menubar --profile texto-ok --wait -- ./sys/ok-texto.sh $ubuntu
+						gnome-terminal --full-screen --hide-menubar --profile texto-ok --wait -- ./sys/volcado-ok.sh $ubuntu
 						image_check=true
 				fi
 		done
@@ -149,4 +149,9 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 
 fi
 
+# mensaje para apagado de modo incorrecto
+COLUMNS=$(tput cols) 
+text="ERROR EN EL APAGADO DEL EQUIPO"
+printf "\n\n\n \033[5;30m %*s \033[0m \n" $(((${#text}+$COLUMNS)/2)) "$text"
+printf "\n\n\t Por favor apaguelo manualmente manteniendo presionado el boton \n\t de apagado durante 5 segundos \n"
 sleep 3600

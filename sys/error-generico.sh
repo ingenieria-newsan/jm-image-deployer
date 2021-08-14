@@ -1,7 +1,7 @@
 #! /bin/bash
-# reproduce un sonido de error y muestra por pantalla los pasos a seguir 
-# para apagar la pc y disponerla para el reparador
-./sys/sonido-error.sh
+
+# sonido de error
+./sys/error-sonido.sh
 
 COLUMNS=$(tput cols) 
 title="UNIDAD RECHAZADA POR ERROR EN ${1} ${2}" 
@@ -14,7 +14,7 @@ printf "\n\n\t 2) Identifique el código de rechazo para '${1} ${2}' y escaneelo
 printf "\n\n\t 3) Escanee el número de serie en la base del equipo con la PC de Ingreso."
 printf "\n\n\t 4) Una vez que finalice los escaneos, disponga el equipo para el reparador."
 text="PRESIONE '"'A'"' PARA APAGAR EL EQUIPO" 
-printf "\n\n \033[1;30m %*s \033[0m \n" $(((${#text}+$COLUMNS)/2)) "$text"
+printf "\n\n\n %*s \n" $(((${#text}+$COLUMNS)/2)) "$text"
 
 # espera presion tecla A
 key=""
