@@ -20,7 +20,7 @@ while [[ $key != "q" ]]
 done
 
 # muestra los qrs
-gnome-terminal --full-screen --hide-menubar --profile qr-ok -- ./qrmac-salida.sh ${1}
+gnome-terminal --full-screen --hide-menubar --profile qr-ok -- ./sys/qrmac-salida.sh ${1}
 
 # mensaje volver a ver los qrs
 clear
@@ -33,7 +33,7 @@ while [[ $key != "a" ]]
 do
 	if [[ $key == "l" ]]
 	then
-		gnome-terminal --full-screen --hide-menubar --profile qr-ok -- ./qrmac-salida.sh ${1}
+		gnome-terminal --full-screen --hide-menubar --profile qr-ok -- ./sys/qrmac-salida.sh ${1}
 	elif [[ $key == "a" ]]
 	then
 		break

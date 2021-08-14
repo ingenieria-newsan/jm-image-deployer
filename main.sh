@@ -36,10 +36,9 @@ hash_archivo="archivo_no_encontrado"
 
 if [ -e /jmdisk/SHA1/test.txt ]
 	then
-		hash_archivo=$(cat /jmdisk/SHA1/test.txt)
+		hash_archivo=$(tr -dc '[[:print:]]' <<< "$(cat /jmdisk/SHA1/test.txt)")   
 	else
 		printf '[ INFO ] Archivo hash SHA1 no encontrado.\n'	
-		#hash_archivo=$(cat /SHA1/debug.txt)
 fi
 
 sleep .5
@@ -52,7 +51,7 @@ if [ $hash_equipo = $hash_archivo ]
 		hash_check=true
 	else
 		printf '[ WARN ] Falló la validación de hash. Verificando particiones...\n'
-		printf "[ INFO ] archivo = ${hash_archivo} \n[ INFO ] equipo = ${hash_equipo} \n" # muestra los hash a los fines de hacer debug
+		printf "[ INFO ] a=${hash_archivo} \n[ INFO ] e=${hash_equipo} \n" # muestra los hash a los fines de hacer debug
 		
 		if [ $(grep -c $huayra /proc/partitions) = 6 ]
 			then
@@ -72,7 +71,8 @@ sudo umount /jmdisk > /dev/null 2>&1
 
 sleep .5
 
-# chequea la version actual de la BIOS con la que se le da por parametro en el archivo 
+# chequea la version actual de la BIOS con la que se le da por parametro en el archivo
+printf '[ INFO ] Validando bios...\n'
 bios_check=false
 if [ $(cat $dir_base/versiones/bios.version) = $(sudo dmidecode -s bios-version) ]
 	then
@@ -116,28 +116,69 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 		
 		# bucle de volcado y control de imagen		
 		image_check=false
-		image_counter=1
+		image_counter=0
 
-		while [ image_check == "false" ]
+		while [ $image_check == "false" ]
 			do
+				# contador de erres y borrado de log previo
+				error_counter=0
+				if [ -e /var/log/clonezilla.log ]
+					then
+						sudo rm -f /var/log/clonezilla.log
+						printf "[ INFO ] Se eliminó correctamente el log anterior de Clonezilla.\n"
+				fi
+
 				# volcado de imagen
 				gnome-terminal --full-screen --hide-menubar --profile texto --wait -- ./sys/volcado.sh $huayra
 
-				# chequeo del log de salida
-				linea="Program terminated"
-				error="Program terminated"
-				
-				# recuperamos la ultima linea del log de salida para ver si se completo correctamente
+				#validaciones
+				printf "[ INFO ] Iniciando validaciones...\n"
+
+				# validación de particiones
+				if [ $(grep -c $huayra /proc/partitions) = 6 ]
+					then
+						printf "\t[  OK  ] Particiones en disco de destino."
+					else
+						printf "\t[ FAIL ] Particiones en disco de destino."
+						error_counter=$($error_counter+1)
+				fi
+				sleep .5
+
+				# validafion finalizacion del proceso Clonezilla
 				if [ -e /var/log/clonezilla.log ]
 					then
-						linea=$(tail -1 /var/log/clonezilla.log | cut -d'!' -f 1)
+						if [ $(cat /var/log/clonezilla.log | grep -c "Ending /usr/sbin/ocs-sr at" ) == "1" ]
+							then
+								printf "\t[  OK  ] Proceso Clonezilla."
+							else
+								printf "\t[ FAIL ] Proceso Clonezilla."
+								error_counter=$($error_counter+1)
+					else
+						printf "\t[ FAIL ] Proceso Clonezilla."
+						error_counter=$($error_counter+1)
 				fi
-				
-				# valida si hay un error y muestra el mensaje correspondiente
-				if [ "$linea" == "$error" ]
+				sleep .5
+
+				# validafion errores del proceso Clonezilla
+				if [ -e /var/log/clonezilla.log ]
 					then
-						gnome-terminal --full-screen --hide-menubar --profile texto --wait -- ./sys/error-volcado.sh $image_counter
+						if [ $(cat /var/log/clonezilla.log | grep -c "Program terminated" ) == "0" ]
+							then
+								printf "\t[  OK  ] Errores Clonezilla."
+							else
+								printf "\t[ FAIL ] Errores Clonezilla."
+								error_counter=$($error_counter+1)
+					else
+						printf "\t[ FAIL ] Errores Clonezilla."
+						error_counter=$($error_counter+1)
+				fi
+				sleep .5
+			
+				# valida si hay un error y muestra el mensaje correspondiente
+				if [ $error_counter != "0" ]
+					then
 						image_counter=$($image_counter+1)
+						gnome-terminal --full-screen --hide-menubar --profile texto --wait -- ./sys/error-volcado.sh $image_counter
 					else
 						gnome-terminal --full-screen --hide-menubar --profile texto-ok --wait -- ./sys/volcado-ok.sh $ubuntu
 						image_check=true
