@@ -13,7 +13,8 @@ printf "\n\n\t 1) Espere hasta que el equipo se apague completamente. Esto suced
 printf "\n\n\t 2) Identifique el código de rechazo para '${1} ${2}' y escaneelo \n\t con la PC de Ingreso."
 printf "\n\n\t 3) Escanee el número de serie en la base del equipo con la PC de Ingreso."
 printf "\n\n\t 4) Una vez que finalice los escaneos, disponga el equipo para el reparador."
-printf "\n\n\n PRESIONE '"'A'"' PARA APAGAR EL EQUIPO"
+text="PRESIONE '"'A'"' PARA APAGAR EL EQUIPO" 
+printf "\n\n \033[1;30m %*s \033[0m \n" $(((${#text}+$COLUMNS)/2)) "$text"
 
 # espera presion tecla A
 key=""
