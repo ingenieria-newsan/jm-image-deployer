@@ -1,5 +1,7 @@
 #! /bin/bash
 
+clear
+
 # directorio de trabajo
 SCRIPT=$(readlink -f $0);
 dir_base=`dirname $SCRIPT`;
@@ -112,7 +114,7 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 		COLUMNS=$(tput cols) 
 		text="ERROR EN EL APAGADO DEL EQUIPO"
 		printf "\n\n\n \033[5;30m %*s \033[0m \n" $(((${#text}+$COLUMNS)/2)) "$text"
-		printf "\n\n\t Por favor apaguelo manualmente manteniendo presionado el boton \n\t de apagado durante 5 segundos \n"
+		printf "\n\n\t Por favor apaguelo manualmente manteniendo presionado el boton \n\t de apagado durante 5 segundos \n\n\n"
 		
 		# bucle de volcado y control de imagen		
 		image_check=false
@@ -137,59 +139,61 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 				# validación de particiones
 				if [ $(grep -c $huayra /proc/partitions) = 6 ]
 					then
-						printf "\t[  OK  ] Particiones en disco de destino."
+						printf "\t[ PASS ]"
 					else
-						printf "\t[ FAIL ] Particiones en disco de destino."
+						printf "\t[ FAIL ]"
 						error_counter=$((error_counter+1))
 				fi
+				printf " Particiones en disco de destino.\n"
+
 				sleep .5
 
 				# validafion finalizacion del proceso Clonezilla
 				if [ -e /var/log/clonezilla.log ]
 					then
-						if [ $(cat /var/log/clonezilla.log | grep -c "Ending /usr/sbin/ocs-sr at" ) == "1" ]
+						if [ $(cat /var/log/clonezilla.log | grep -c "Ending /usr/sbin/ocs-sr at" ) = 1 ]
 							then
-								printf "\t[  OK  ] Proceso Clonezilla."
+								printf "\t[ PASS ]"
 							else
-								printf "\t[ FAIL ] Proceso Clonezilla."
+								printf "\t[ FAIL ]"
 								error_counter=$((error_counter+1))
 						fi
 					else
-						printf "\t[ FAIL ] Proceso Clonezilla."
+						printf "\t[ FAIL ]"
 						error_counter=$((error_counter+1))
 				fi
+				printf " Finalización del proceso Clonezilla.\n"
 				sleep .5
 
 				# validafion errores del proceso Clonezilla
 				if [ -e /var/log/clonezilla.log ]
 					then
-						if [ $(cat /var/log/clonezilla.log | grep -c "Program terminated" ) == "0" ]
+						if [ $(cat /var/log/clonezilla.log | grep -c "Program terminated" ) = 0 ]
 							then
-								printf "\t[  OK  ] Errores Clonezilla."
+								printf "\t[ PASS ]"
 							else
-								printf "\t[ FAIL ] Errores Clonezilla."
+								printf "\t[ FAIL ]"
 								error_counter=$((error_counter+1))
 						fi
 					else
-						printf "\t[ FAIL ] Errores Clonezilla."
+						printf "\t[ FAIL ]"
 						error_counter=$((error_counter+1))
 				fi
+				printf " Control de errores en proceso Clonezilla.\n"
 				sleep .5
 			
 				# valida si hay un error y muestra el mensaje correspondiente
-				if [ [ $error_counter != "0" ] ]
+				printf "\t[ INFO ] Errores encontrados = ${error_counter}\n"
+				if [ $error_counter != 0 ]
 					then
-						image_counter=$($image_counter+1)
-						gnome-terminal --full-screen --hide-menubar --profile texto --wait -- ./sys/error-volcado.sh $image_counter
+						image_counter=$((image_counter+1))
+						gnome-terminal --full-screen --hide-menubar --profile texto-error --wait -- ./sys/error-volcado.sh $image_counter
 					else
 						gnome-terminal --full-screen --hide-menubar --profile texto-ok --wait -- ./sys/volcado-ok.sh $ubuntu
 						image_check=true
-					fi
 				fi
-		done
-	
+			done
 	else
 		printf "[ WARN ] Faltan validaciones requeridas: hash_check=$hash_check bios_check=$bios_check"
-
 fi
 sleep 3600
