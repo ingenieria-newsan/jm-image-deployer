@@ -11,7 +11,7 @@ printf "\n\n\t 3) Una vez que finalice el apagado, disponga el equipo para el em
 text="PRESIONE '"'Q'"' PARA MOSTRAR LOS CÓDIGOS" 
 printf "\n\n\n%*s\n" $(((${#text}+$COLUMNS)/2)) "$text"
 
-# Espera la tecla q
+# espera la tecla q
 key=""
 read -s -n 1 -p "" key 
 while [[ $key != "q" ]] 

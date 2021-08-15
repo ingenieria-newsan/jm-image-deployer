@@ -120,7 +120,7 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 
 		while [ $image_check == "false" ]
 			do
-				# contador de erres y borrado de log previo
+				# contador de errores y borrado de log previo
 				error_counter=0
 				if [ -e /var/log/clonezilla.log ]
 					then
@@ -190,9 +190,4 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 
 fi
 
-# mensaje para apagado de modo incorrecto
-COLUMNS=$(tput cols) 
-text="ERROR EN EL APAGADO DEL EQUIPO"
-printf "\n\n\n \033[5;30m %*s \033[0m \n" $(((${#text}+$COLUMNS)/2)) "$text"
-printf "\n\n\t Por favor apaguelo manualmente manteniendo presionado el boton \n\t de apagado durante 5 segundos \n"
 sleep 3600
