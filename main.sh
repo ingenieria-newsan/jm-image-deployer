@@ -140,7 +140,7 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 						printf "\t[  OK  ] Particiones en disco de destino."
 					else
 						printf "\t[ FAIL ] Particiones en disco de destino."
-						error_counter=$($error_counter+1)
+						error_counter=$((error_counter+1))
 				fi
 				sleep .5
 
@@ -152,10 +152,11 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 								printf "\t[  OK  ] Proceso Clonezilla."
 							else
 								printf "\t[ FAIL ] Proceso Clonezilla."
-								error_counter=$($error_counter+1)
+								error_counter=$((error_counter+1))
+						fi
 					else
 						printf "\t[ FAIL ] Proceso Clonezilla."
-						error_counter=$($error_counter+1)
+						error_counter=$((error_counter+1))
 				fi
 				sleep .5
 
@@ -167,21 +168,23 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 								printf "\t[  OK  ] Errores Clonezilla."
 							else
 								printf "\t[ FAIL ] Errores Clonezilla."
-								error_counter=$($error_counter+1)
+								error_counter=$((error_counter+1))
+						fi
 					else
 						printf "\t[ FAIL ] Errores Clonezilla."
-						error_counter=$($error_counter+1)
+						error_counter=$((error_counter+1))
 				fi
 				sleep .5
 			
 				# valida si hay un error y muestra el mensaje correspondiente
-				if [ $error_counter != "0" ]
+				if [ [ $error_counter != "0" ] ]
 					then
 						image_counter=$($image_counter+1)
 						gnome-terminal --full-screen --hide-menubar --profile texto --wait -- ./sys/error-volcado.sh $image_counter
 					else
 						gnome-terminal --full-screen --hide-menubar --profile texto-ok --wait -- ./sys/volcado-ok.sh $ubuntu
 						image_check=true
+					fi
 				fi
 		done
 	
@@ -189,5 +192,4 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 		printf "[ WARN ] Faltan validaciones requeridas: hash_check=$hash_check bios_check=$bios_check"
 
 fi
-
 sleep 3600
