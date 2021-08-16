@@ -17,7 +17,7 @@ Siga los siguientes pasos para instalar el sistema:
 3. Copie el archivo `./iniciar.sh` en el escritorio.
 4. Copir el archivo `./update` en el directorio `/home`.
 5. Instale las dependencias.
-6. Agregue `~/Desktop/iniciar.sh` en la lista de auto-arranque.
+6. Agregue `/iniciar.sh` en la lista de auto-arranque.
 
 ## Update
 Para actualizar la solución siga los siguientes pasos:
