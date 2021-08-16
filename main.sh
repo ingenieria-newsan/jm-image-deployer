@@ -174,7 +174,7 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 				# validafion errores del proceso Clonezilla
 				if [ -e /var/log/clonezilla.log ]
 					then
-						if [ $(tail -1 /var/log/clonezilla.log | cut -1 -d'!' -f 1 | grep -c "Program terminated" ) = 0 ]
+						if [ $(tail -1 /var/log/clonezilla.log | cut -d'!' -f 1 | grep -c "Program terminated" ) = 0 ]
 							then
 								printf "[${m_pass}]"
 							else
