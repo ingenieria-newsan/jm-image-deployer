@@ -108,7 +108,7 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 		
 		# aprovisionamiento del equipo
 		printf "[${m_info}] Iniciando aprovisionamiento...\n"
-		gnome-terminal --full-screen --hide-menubar --profile texto --wait -- /home/newsan/jm-provition-monitor/monitor.sh
+		gnome-terminal --full-screen --hide-menubar --profile texto --wait -- /home/jm-provition-monitor/monitor.sh
 		printf "[${m_info}] Aprovisionamiento finalizado\n"
 
 		# mensaje volcado de imagen
