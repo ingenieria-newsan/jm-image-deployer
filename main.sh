@@ -117,8 +117,8 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 		# mensaje para apagado de modo incorrecto
 		COLUMNS=$(tput cols) 
 		text="ERROR EN EL APAGADO DEL EQUIPO"
-		printf "\n\n\n \033[5;31m %*s \033[0m \n" $(((${#text}+$COLUMNS)/2)) "$text"
-		printf "\n\n\t Por favor apaguelo manualmente manteniendo presionado el boton \n\t de apagado durante 5 segundos \n\n\n"
+		printf "\n\n \033[5;31m %*s \n" $(((${#text}+$COLUMNS)/2)) "$text"
+		printf "\n\t Por favor apaguelo manualmente manteniendo presionado el boton \n\t de apagado durante 5 segundos \033[0m \n\n"
 		
 		# bucle de volcado y control de imagen		
 		image_check=false
@@ -202,8 +202,8 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 				# mensaje para apagado de modo incorrecto
 				COLUMNS=$(tput cols) 
 				text="ERROR EN EL APAGADO DEL EQUIPO"
-				printf "\n\n\n \033[5;31m %*s \033[0m \n" $(((${#text}+$COLUMNS)/2)) "$text"
-				printf "\n\n\t Por favor apaguelo manualmente manteniendo presionado el boton \n\t de apagado durante 5 segundos \n\n\n"
+				printf "\n\n \033[5;31m %*s \n" $(((${#text}+$COLUMNS)/2)) "$text"
+				printf "\n\t Por favor apaguelo manualmente manteniendo presionado el boton \n\t de apagado durante 5 segundos \033[0m \n\n"
 
 			done
 	else
