@@ -135,7 +135,9 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 				fi
 
 				# volcado de imagen
+				printf "[${m_info}] Iniciando volcado de imágen.\n"
 				gnome-terminal --full-screen --hide-menubar --profile texto --wait -- ./sys/volcado.sh $huayra
+				printf "[${m_info}] Volcado de imágen finalizado.\n"
 
 				#validaciones
 				printf "[${m_info}] Iniciando validaciones...\n"
@@ -172,7 +174,7 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 				# validafion errores del proceso Clonezilla
 				if [ -e /var/log/clonezilla.log ]
 					then
-						if [ $(cat /var/log/clonezilla.log | grep -c "Program terminated" ) = 0 ]
+						if [ $(tail -1 /var/log/clonezilla.log | cut -1 -d'!' -f 1 | grep -c "Program terminated" ) = 0 ]
 							then
 								printf "[${m_pass}]"
 							else
