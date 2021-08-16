@@ -1,8 +1,8 @@
 #! /bin/bash
 
 # eliminar
-sudo rm -rf jm-provition-monitor
-sudo rm -rf jm-image-deployer
+sudo rm -rf ./jm-provition-monitor
+sudo rm -rf ./jm-image-deployer
 sleep 1
 
 # descargar
@@ -18,4 +18,3 @@ sudo chmod +x ./jm-provition-monitor/res/*
 sudo chmod +x ./jm-image-deployer/*.sh
 sudo chmod +x ./jm-image-deployer/sys/*.sh
 sleep 1
-
