@@ -20,7 +20,7 @@ if [ $ubuntu == $huayra ]
 		huayra="sdb"
 fi
 
-printf "[${m_info}] Discos: deploy=${ubuntu^^} target=${huayra^^}.\n"
+printf "[${m_info}] Discos: deploy=${ubuntu} target=${huayra}.\n"
 
 sleep .5
 
@@ -143,9 +143,9 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 				# validación de particiones
 				if [ $(grep -c $huayra /proc/partitions) = 6 ]
 					then
-						printf "\t[${m_pass}]"
+						printf "[${m_pass}]"
 					else
-						printf "\t[${m_fail}]"
+						printf "[${m_fail}]"
 						error_counter=$((error_counter+1))
 				fi
 				printf " Particiones en disco de destino.\n"
@@ -157,9 +157,9 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 					then
 						if [ $(cat /var/log/clonezilla.log | grep -c "Ending /usr/sbin/ocs-sr at" ) = 1 ]
 							then
-								printf "\t[${m_pass}]"
+								printf "[${m_pass}]"
 							else
-								printf "\t[${m_fail}]"
+								printf "[${m_fail}]"
 								error_counter=$((error_counter+1))
 						fi
 					else
@@ -174,9 +174,9 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 					then
 						if [ $(cat /var/log/clonezilla.log | grep -c "Program terminated" ) = 0 ]
 							then
-								printf "\t[${m_pass}]"
+								printf "[${m_pass}]"
 							else
-								printf "\t[${m_fail}]"
+								printf "[${m_fail}]"
 								error_counter=$((error_counter+1))
 						fi
 					else
@@ -207,6 +207,6 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 	else
 		printf "[${m_warn}] Faltan validaciones requeridas: hash_check=$hash_check bios_check=$bios_check"
 fi
-printf "\t[${m_fail}] Si está viendo esto es porque algo NO sucedio según lo esperado.\n"
+printf "[${m_fail}] Si está viendo esto es porque algo NO sucedio según lo esperado.\n"
 sleep 3600
 shutdown now
