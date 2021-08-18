@@ -115,10 +115,10 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 		printf "[${m_info}] Iniciando volcado de imagen...\n"
 	
 		# mensaje para apagado de modo incorrecto
-		COLUMNS=$(tput cols) 
-		text="ERROR EN EL APAGADO DEL EQUIPO"
-		printf "\n\n \033[5;31m %*s \n" $(((${#text}+$COLUMNS)/2)) "$text"
-		printf "\n\t Por favor apaguelo manualmente manteniendo presionado el boton \n\t de apagado durante 5 segundos \033[0m \n\n"
+		# COLUMNS=$(tput cols) 
+		# text="ERROR EN EL APAGADO DEL EQUIPO"
+		# printf "\n\n \033[5;31m %*s \n" $(((${#text}+$COLUMNS)/2)) "$text"
+		# printf "\n\t Por favor apaguelo manualmente manteniendo presionado el boton \n\t de apagado durante 5 segundos \033[0m \n\n"
 		
 		# bucle de volcado y control de imagen		
 		image_check=false
@@ -199,16 +199,11 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 						image_check=true
 				fi
 
-				# mensaje para apagado de modo incorrecto
-				COLUMNS=$(tput cols) 
-				text="ERROR EN EL APAGADO DEL EQUIPO"
-				printf "\n\n \033[5;31m %*s \n" $(((${#text}+$COLUMNS)/2)) "$text"
-				printf "\n\t Por favor apaguelo manualmente manteniendo presionado el boton \n\t de apagado durante 5 segundos \033[0m \n\n"
-
 			done
 	else
 		printf "[${m_warn}] Faltan validaciones requeridas: hash_check=$hash_check bios_check=$bios_check"
 fi
 printf "[${m_fail}] Si está viendo esto es porque algo NO sucedio según lo esperado.\n"
+
 sleep 3600
 shutdown now
