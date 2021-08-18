@@ -26,8 +26,8 @@ sleep .5
 
 # monta la particion donde se encuentra la imagen del a volcar en /home/partimag
 printf "[${m_info}] Montando particiones...\n"
-sudo umount /dev/${ubuntu}3
-sudo mount /dev/${ubuntu}3 /home/partimag > /dev/null 2>&1
+sudo umount /dev/${ubuntu}3 /dev/null 2>&1
+sudo mount /dev/${ubuntu}3 /home/partimag
 sudo umount /jmdisk > /dev/null 2>&1
 sudo mkdir /jmdisk > /dev/null 2>&1
 sudo mount /dev/${huayra}3 /jmdisk
@@ -135,7 +135,6 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 				fi
 
 				# volcado de imagen
-				printf "[${m_info}] Iniciando volcado de imágen.\n"
 				gnome-terminal --full-screen --hide-menubar --profile texto --wait -- ./sys/volcado.sh $huayra
 				printf "[${m_info}] Volcado de imágen finalizado.\n"
 
