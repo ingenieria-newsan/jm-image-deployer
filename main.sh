@@ -26,9 +26,9 @@ sleep .1
 
 # monta la particion donde se encuentra la imagen del a volcar en /home/partimag
 printf "[${m_info}] Montando particiones...\n"
-sudo umount /dev/${ubuntu}3 /dev/null 2>&1
-sudo mount /dev/${ubuntu}3 /home/partimag
+sudo umount /dev/${ubuntu}3 > /dev/null 2>&1
 sudo umount /jmdisk > /dev/null 2>&1
+sudo mount /dev/${ubuntu}3 /home/partimag
 sudo mkdir /jmdisk > /dev/null 2>&1
 sudo mount /dev/${huayra}3 /jmdisk
 
@@ -201,9 +201,9 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 
 			done
 	else
-		printf "[${m_warn}] Faltan validaciones requeridas: hash_check=$hash_check bios_check=$bios_check"
+		printf "[${m_warn}] Faltan validaciones requeridas: hash_check=$hash_check bios_check=$bios_check\n"
 fi
-printf "[${m_fail}] Si está viendo esto es porque algo NO sucedio según lo esperado.\n"
+printf "[${m_fail}] \033[5;31mSi está viendo esto es porque algo NO sucedio según lo esperado. Intentando apagar el equipo...\n"
 
 sleep 10
 shutdown now
