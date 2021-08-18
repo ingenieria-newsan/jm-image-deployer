@@ -22,7 +22,7 @@ fi
 
 printf "[${m_info}] Discos: deploy=${ubuntu} target=${huayra}.\n"
 
-sleep .5
+sleep .1
 
 # monta la particion donde se encuentra la imagen del a volcar en /home/partimag
 printf "[${m_info}] Montando particiones...\n"
@@ -32,7 +32,7 @@ sudo umount /jmdisk > /dev/null 2>&1
 sudo mkdir /jmdisk > /dev/null 2>&1
 sudo mount /dev/${huayra}3 /jmdisk
 
-sleep .5
+sleep .1
 
 # calcula los hash, seteamos hash para no tener errores en la comparacion, si existe el archivo test.txt se toma el contenido de este
 printf "[${m_info}] Validando hash...\n"
@@ -47,7 +47,7 @@ if [ -e /jmdisk/SHA1/test.txt ]
 		printf "[${m_info}] Archivo hash SHA1 no encontrado.\n"
 fi
 
-sleep .5
+sleep .1
 
 # compara los hash de equipo y archivo, si hubo un volcado trunco de la imagen
 hash_check=false
@@ -70,12 +70,12 @@ if [ $hash_equipo = $hash_archivo ]
 		fi
 fi
 
-sleep .5
+sleep .1
 
 # desmonta el disco donde se encuentra el flag del running
 sudo umount /jmdisk > /dev/null 2>&1
 
-sleep .5
+sleep .1
 
 # chequea la version actual de la BIOS con la que se le da por parametro en el archivo
 printf "[${m_info}] Validando bios...\n"
@@ -90,7 +90,7 @@ if [ $(cat $dir_base/versiones/bios.version) = $(sudo dmidecode -s bios-version)
 		gnome-terminal --full-screen --hide-menubar --profile texto-error --wait -- ./sys/error-generico.sh BIOS
 fi
 
-sleep .5
+sleep .1
 
 # main process
 if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
@@ -135,7 +135,8 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 				fi
 
 				# volcado de imagen
-				gnome-terminal --full-screen --hide-menubar --profile texto --wait -- ./sys/volcado.sh $huayra
+				image_name=$(cat $dir_base/versiones/image.version)
+				gnome-terminal --full-screen --hide-menubar --profile texto --wait -- ./sys/volcado.sh $image_name $huayra
 				printf "[${m_info}] Volcado de imágen finalizado.\n"
 
 				#validaciones
@@ -151,7 +152,7 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 				fi
 				printf " Particiones en disco de destino.\n"
 
-				sleep .5
+				sleep .1
 
 				# validafion finalizacion del proceso Clonezilla
 				if [ -e /var/log/clonezilla.log ]
@@ -168,7 +169,7 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 						error_counter=$((error_counter+1))
 				fi
 				printf " Finalización del proceso Clonezilla.\n"
-				sleep .5
+				sleep .1
 
 				# validafion errores del proceso Clonezilla
 				if [ -e /var/log/clonezilla.log ]
@@ -185,7 +186,7 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 						error_counter=$((error_counter+1))
 				fi
 				printf " Control de errores en proceso Clonezilla.\n"
-				sleep .5
+				sleep .1
 			
 				# valida si hay un error y muestra el mensaje correspondiente
 				printf "[${m_info}] Errores encontrados = ${error_counter}\n"
@@ -204,5 +205,5 @@ if [ $hash_check == "true" ] &&  [ $bios_check == "true" ]
 fi
 printf "[${m_fail}] Si está viendo esto es porque algo NO sucedio según lo esperado.\n"
 
-sleep 3600
+sleep 10
 shutdown now

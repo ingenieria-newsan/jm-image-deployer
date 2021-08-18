@@ -15,4 +15,4 @@ serial=$(lsblk --nodeps -no serial /dev/${1})
 qrencode -t ansi256 $serial
 
 # espera 3 segundos 
-sleep 3
+sleep 6
