@@ -49,4 +49,4 @@ printf "\n\n\t Espere hasta que la pantalla quede en negro y el LED indicador \n
 sleep 3
 
 # apagado
-shutdown now
+shutdown -r now
