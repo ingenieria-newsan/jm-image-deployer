@@ -25,7 +25,7 @@ gnome-terminal --full-screen --hide-menubar --profile qr-ok -- ./sys/qrmac-salid
 # mensaje volver a ver los qrs
 clear
 printf "\n\n \033[1;30m %*s \033[0m \n" $(((${#title}+$COLUMNS)/2)) "$title"
-printf "\n\n\n\t PRESIONE '"'L'"' PARA VOLVER A MOSTRAR LOS CODIGOS O 'A' PARA APAGAR"
+printf "\n\n\n\t PRESIONE '"'L'"' PARA VOLVER A MOSTRAR LOS CODIGOS O 'A' PARA REINICIAR"
 
 # espera una tecla
 read -s -n 1  -p "" key
@@ -45,8 +45,8 @@ done
 clear
 title="APAGANDO EL EQUIPO" 
 printf "\n\n \033[1;30m %*s \033[0m \n" $(((${#title}+$COLUMNS)/2)) "$title"
-printf "\n\n\t Espere hasta que la pantalla quede en negro y el LED indicador \n\t de encendido se apague."
+printf "\n\n\t Espere hasta que la pantalla quede en negro y el LED indicador \n\t de encendido se apague y desconecte el usb."
 sleep 3
 
 # apagado
-shutdown -r now
+reboot -p
